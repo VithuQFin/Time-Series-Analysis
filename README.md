@@ -16,16 +16,19 @@ This repository provides a complete pipeline for downloading, cleaning, analyzin
 
 ## 🗂️ Project Structure
 
+## 📁 Project Structure
+
+```plaintext
 .
 ├── analyse/
-│ ├── metrics.py # Financial metrics computation
-│ └── visualisations.py # Static visualizations
+│   ├── metrics.py             # Financial metrics computation
+│   └── visualisations.py      # Static visualizations
 ├── data/
-│ ├── raw/ # Raw downloaded data
-│ ├── clean/ # Cleaned data after preprocessing
-│ ├── data_loader.py # Yahoo Finance data fetcher
-│ └── data_cleaning.py # Data preprocessing pipeline
-├── main.py # Main CLI-based pipeline
-├── requirements.txt # Python dependencies
-├── .gitignore # Git ignored files
-└── README.md # Project documentation
+│   ├── raw/                   # Raw downloaded data
+│   ├── clean/                 # Cleaned data after preprocessing
+│   ├── data_loader.py         # Yahoo Finance data fetcher
+│   └── data_cleaning.py       # Data preprocessing pipeline
+├── main.py                    # Main CLI-based pipeline
+├── requirements.txt           # Python dependencies
+├── .gitignore                 # Git ignored files
+└── README.md                  # Project documentation
