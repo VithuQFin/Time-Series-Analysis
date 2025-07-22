@@ -16,7 +16,6 @@ This repository provides a complete pipeline for downloading, cleaning, analyzin
 
 ## 🗂️ Project Structure
 
-## 📁 Project Structure
 
 ```plaintext
 .
