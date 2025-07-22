@@ -1,1 +1,10 @@
 app.py
+data/raw/
+data/clean/
+# Python cache
+__pycache__/
+*.py[cod]
+
+# IDE / OS metadata
+.vscode/
+.DS_Store
