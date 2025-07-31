@@ -10,18 +10,18 @@ def fetch_multiple_tickers(tickers, period, raw_path="data/raw/"):
 
     for ticker in tickers:
         try:
-            print(f"🔄 Téléchargement de {ticker} pour {period}...")
-            data = yf.download(ticker, period=period, auto_adjust=False)  # 🔧 correction ici
+            print(f"🔄 Downloading {ticker} data for {period}...")
+            data = yf.download(ticker, period=period, auto_adjust=False)  # 🔧 adjustment kept
 
             if not data.empty:
                 data.reset_index(inplace=True)
                 data['Ticker'] = ticker
 
-                # Vérifie que les colonnes nécessaires existent
+                # Ensure required columns are present
                 expected_cols = ['Date', 'Open', 'High', 'Low', 'Close', 'Adj Close', 'Volume', 'Ticker']
                 for col in ['Adj Close']:
                     if col not in data.columns:
-                        data[col] = data['Close']  # fallback si Adj Close absent
+                        data[col] = data['Close']  # fallback if Adj Close is missing
 
                 data = data[['Date', 'Open', 'High', 'Low', 'Close', 'Adj Close', 'Volume', 'Ticker']]
 
@@ -29,13 +29,13 @@ def fetch_multiple_tickers(tickers, period, raw_path="data/raw/"):
                 file_path = os.path.join(raw_path, file_name)
                 data.to_csv(file_path, index=False)
 
-                print(f"✅ Données enregistrées : {file_path}")
+                print(f"✅ Data saved to: {file_path}")
                 all_data.append(data)
             else:
-                print(f"⚠️ Aucune donnée pour {ticker}")
+                print(f"⚠️ No data found for {ticker}")
 
         except Exception as e:
-            print(f"❌ Erreur lors du téléchargement de {ticker} : {e}")
+            print(f"❌ Error while downloading {ticker}: {e}")
 
     return all_data
 

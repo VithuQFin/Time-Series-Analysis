@@ -16,24 +16,24 @@ from analyse.visualisations import (
     plot_correlation_matrix
 )
 
-# === PARAMÈTRES GLOBAUX === #
+# === GLOBAL PARAMETERS === #
 TICKERS = ["AAPL"]
-PERIOD = "5y"  # ex: "1y", "5y", "max"
+PERIOD = "5y"  # e.g., "1y", "5y", "max"
 RAW_PATH = "data/raw/"
 CLEAN_PATH = "data/clean/"
 PERIODS_PER_YEAR = 252
 RISK_FREE_RATE = 0.02
 
-# === ÉTAPE 1 : TÉLÉCHARGEMENT DES DONNÉES === #
-print("📥 Étape 1 : Téléchargement des données...")
+# === STEP 1: DOWNLOAD DATA === #
+print("📥 Step 1: Downloading data...")
 fetch_multiple_tickers(TICKERS, PERIOD, raw_path=RAW_PATH)
 
-# === ÉTAPE 2 : NETTOYAGE DES DONNÉES === #
-print("\n🧹 Étape 2 : Nettoyage des données...")
+# === STEP 2: CLEAN DATA === #
+print("\n🧹 Step 2: Cleaning data...")
 clean_data_files(raw_path=RAW_PATH, clean_path=CLEAN_PATH)
 
-# === ÉTAPE 3 : CHARGEMENT DES FICHIERS NETTOYÉS === #
-print("\n📂 Étape 3 : Chargement des fichiers nettoyés...")
+# === STEP 3: LOAD CLEANED FILES === #
+print("\n📂 Step 3: Loading cleaned files...")
 cleaned_dfs = {}
 
 for ticker in TICKERS:
@@ -45,10 +45,10 @@ for ticker in TICKERS:
         df["Date"] = pd.to_datetime(df["Date"])
         cleaned_dfs[ticker] = df
     else:
-        print(f"⚠️ Fichier nettoyé non trouvé pour {ticker} ({file_name})")
+        print(f"⚠️ Cleaned file not found for {ticker} ({file_name})")
 
-# === ÉTAPE 4 : CALCUL DES MÉTRIQUES === #
-print("\n📊 Étape 4 : Calcul des métriques financières...\n")
+# === STEP 4: COMPUTE METRICS === #
+print("\n📊 Step 4: Computing financial metrics...\n")
 for ticker, df in cleaned_dfs.items():
     print(f"📈 {ticker}")
     metrics = compute_all_metrics(df, return_col="Return", periods_per_year=PERIODS_PER_YEAR, risk_free_rate=RISK_FREE_RATE)
@@ -56,10 +56,10 @@ for ticker, df in cleaned_dfs.items():
         print(f"   {key:25s} : {value:.2%}" if isinstance(value, float) else f"   {key:25s} : {value}")
     print("")
 
-# === ÉTAPE 5 : VISUALISATIONS === #
-print("\n📉 Étape 5 : Visualisations...\n")
+# === STEP 5: VISUALIZATIONS === #
+print("\n📉 Step 5: Generating visualizations...\n")
 for ticker, df in cleaned_dfs.items():
-    print(f"🔍 Visualisation de {ticker}...")
+    print(f"🔍 Visualizing {ticker}...")
     plot_price_series(df, ticker=ticker)
     plot_log_return_evolution(df, ticker=ticker)
     plot_return_evolution(df, ticker=ticker)
@@ -68,9 +68,9 @@ for ticker, df in cleaned_dfs.items():
     plot_log_return_distribution(df, ticker=ticker)
     plot_drawdown(df, ticker=ticker)
 
-# === ÉTAPE 6 : MATRICE DE CORRÉLATION === #
+# === STEP 6: CORRELATION MATRIX === #
 if len(TICKERS) > 1:
-    print("\n🔗 Étape 6 : Matrice de corrélation...")
+    print("\n🔗 Step 6: Computing correlation matrix...")
     plot_correlation_matrix(cleaned_dfs)
 
-print("\n✅ Pipeline terminé.")
+print("\n✅ Pipeline completed.")

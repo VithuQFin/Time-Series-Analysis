@@ -1,5 +1,3 @@
-# src/visualisations.py
-
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -7,12 +5,12 @@ import numpy as np
 import plotly.express as px
 import streamlit as st
 
-def plot_price_series(df: pd.DataFrame, title: str = "Évolution du prix", ticker: str = ""):
+def plot_price_series(df: pd.DataFrame, title: str = "Price Evolution", ticker: str = ""):
     plt.figure(figsize=(12, 5))
-    plt.plot(df["Date"], df["Close"], label=f"{ticker} - Prix de clôture")
+    plt.plot(df["Date"], df["Close"], label=f"{ticker} - Closing Price")
     plt.title(title)
     plt.xlabel("Date")
-    plt.ylabel("Prix")
+    plt.ylabel("Price")
     plt.grid(True)
     plt.legend()
     plt.tight_layout()
@@ -21,10 +19,10 @@ def plot_price_series(df: pd.DataFrame, title: str = "Évolution du prix", ticke
 
 def plot_log_return_evolution(df: pd.DataFrame, return_col: str = "Log Return", ticker: str = ""):
     plt.figure(figsize=(12, 5))
-    plt.plot(df["Date"], df[return_col], label=f"{ticker} - Rendement logarithmique")
-    plt.title("Évolution du rendement logarithmique")
+    plt.plot(df["Date"], df[return_col], label=f"{ticker} - Log Return")
+    plt.title("Log Return Evolution")
     plt.xlabel("Date")
-    plt.ylabel("Rendement Logarithmique")
+    plt.ylabel("Log Return")
     plt.grid(True)
     plt.legend()
     plt.tight_layout()
@@ -33,10 +31,10 @@ def plot_log_return_evolution(df: pd.DataFrame, return_col: str = "Log Return", 
 
 def plot_return_evolution(df: pd.DataFrame, return_col: str = "Return", ticker: str = ""):
     plt.figure(figsize=(12, 5))
-    plt.plot(df["Date"], df[return_col], label=f"{ticker} - Rendement")
-    plt.title("Évolution du rendement")
+    plt.plot(df["Date"], df[return_col], label=f"{ticker} - Return")
+    plt.title("Return Evolution")
     plt.xlabel("Date")
-    plt.ylabel("Rendement")
+    plt.ylabel("Return")
     plt.grid(True)
     plt.legend()
     plt.tight_layout()
@@ -46,10 +44,10 @@ def plot_return_evolution(df: pd.DataFrame, return_col: str = "Return", ticker: 
 def plot_rolling_volatility(df: pd.DataFrame, window: int = 20, return_col: str = "Return", ticker: str = ""):
     rolling_vol = df[return_col].rolling(window).std()
     plt.figure(figsize=(12, 5))
-    plt.plot(df["Date"], rolling_vol, label=f"{ticker} - Volatilité glissante ({window} jours)")
-    plt.title(f"Volatilité glissante - Fenêtre {window} jours")
+    plt.plot(df["Date"], rolling_vol, label=f"{ticker} - Rolling Volatility ({window} days)")
+    plt.title(f"Rolling Volatility - {window}-Day Window")
     plt.xlabel("Date")
-    plt.ylabel("Volatilité")
+    plt.ylabel("Volatility")
     plt.grid(True)
     plt.legend()
     plt.tight_layout()
@@ -58,10 +56,10 @@ def plot_rolling_volatility(df: pd.DataFrame, window: int = 20, return_col: str 
 
 def plot_correlation_matrix(data_dict: dict):
     """
-    Affiche la heatmap des corrélations entre plusieurs DataFrames.
-    
+    Displays the heatmap of correlations between multiple cleaned DataFrames.
+
     Parameters:
-        data_dict (dict): Dictionnaire {ticker: DataFrame nettoyé}
+        data_dict (dict): Dictionary {ticker: cleaned DataFrame}
     """
     returns = pd.DataFrame({
         ticker: df["Return"] for ticker, df in data_dict.items()
@@ -71,9 +69,10 @@ def plot_correlation_matrix(data_dict: dict):
 
     plt.figure(figsize=(10, 8))
     sns.heatmap(corr, annot=True, cmap="coolwarm", vmin=-1, vmax=1, linewidths=0.5)
-    plt.title("Matrice de corrélation des rendements")
+    plt.title("Return Correlation Matrix")
     plt.tight_layout()
     plt.show()
+
 
 def plot_corr_matrix_plotly(data_dict):
     returns = pd.DataFrame({
@@ -88,32 +87,33 @@ def plot_corr_matrix_plotly(data_dict):
         color_continuous_scale="RdBu_r",
         zmin=-1,
         zmax=1,
-        title="Matrice de corrélation des rendements"
+        title="Return Correlation Matrix"
     )
     fig.update_layout(margin=dict(l=40, r=40, t=40, b=40))
     st.plotly_chart(fig, use_container_width=True)
 
 
-
 def plot_return_distribution(df: pd.DataFrame, return_col: str = "Return", bins: int = 50, ticker: str = ""):
     plt.figure(figsize=(10, 5))
     sns.histplot(df[return_col], bins=bins, kde=True)
-    plt.title(f"Distribution des rendements - {ticker}")
-    plt.xlabel("Rendement")
-    plt.ylabel("Fréquence")
+    plt.title(f"Return Distribution - {ticker}")
+    plt.xlabel("Return")
+    plt.ylabel("Frequency")
     plt.grid(True)
     plt.tight_layout()
     plt.show()
+
 
 def plot_log_return_distribution(df: pd.DataFrame, return_col: str = "Log Return", bins: int = 50, ticker: str = ""):
     plt.figure(figsize=(10, 5))
     sns.histplot(df[return_col], bins=bins, kde=True)
-    plt.title(f"Distribution des rendements logarithmiques - {ticker}")
-    plt.xlabel("Rendement Logarithmique")
-    plt.ylabel("Fréquence")
+    plt.title(f"Log Return Distribution - {ticker}")
+    plt.xlabel("Log Return")
+    plt.ylabel("Frequency")
     plt.grid(True)
     plt.tight_layout()
     plt.show()
+
 
 def plot_drawdown(df: pd.DataFrame, return_col: str = "Return", ticker: str = ""):
     cumulative = (1 + df[return_col]).cumprod()
@@ -122,7 +122,7 @@ def plot_drawdown(df: pd.DataFrame, return_col: str = "Return", ticker: str = ""
 
     plt.figure(figsize=(12, 5))
     plt.plot(df["Date"], drawdown, color="red", label=f"Drawdown - {ticker}")
-    plt.title("Drawdown cumulé")
+    plt.title("Cumulative Drawdown")
     plt.xlabel("Date")
     plt.ylabel("Drawdown")
     plt.grid(True)
